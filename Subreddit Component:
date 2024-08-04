@@ -1,0 +1,46 @@
+function Subreddit({ name }) {
+  const [posts, setPosts] = React.useState([]);
+  const [subscribed, setSubscribed] = React.useState(false);
+  const [newPost, setNewPost] = React.useState('');
+
+  React.useEffect(() => {
+    
+    setPosts([
+      { id: 1, title: 'Post 1', upvotes: 10, comments: [] },
+      { id: 2, title: 'Post 2', upvotes: 5, comments: [] }
+    ]);
+  }, [name]);
+
+  const handleSubscribe = () => {
+    setSubscribed(!subscribed);
+   
+  };
+
+  const handleNewPost = () => {
+    setPosts([{ id: Date.now(), title: newPost, upvotes: 0, comments: [] }, ...posts]);
+    setNewPost('');
+  };
+
+  return (
+    <div>
+      <h2>r/{name}</h2>
+      <button onClick={handleSubscribe}>
+        {subscribed ? 'Unsubscribe' : 'Subscribe'}
+      </button>
+      <div>
+        <input
+          type="text"
+          value={newPost}
+          onChange={(e) => setNewPost(e.target.value)}
+          placeholder="New post"
+        />
+        <button onClick={handleNewPost}>Submit</button>
+      </div>
+      <div>
+        {posts.map(post => (
+          <Post key={post.id} post={post} />
+        ))}
+      </div>
+    </div>
+  );
+}
